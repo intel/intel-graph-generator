@@ -6,6 +6,8 @@ This software is a general purpose graphing solution that exposes a web service 
 
 Pull and build the source code with Visual Studio 2010. Launch GraphUI.exe as administrator to expose the web service. Launch Client.exe and push the buttons to create graphs and you should see them appear in GraphUI.exe. GraphProxy.dll is a third project that simplifies communication with the web service.
 
+![alt text](images/UI.png)
+
 ### Prerequisites
 
 Windows 8.1
