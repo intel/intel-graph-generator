@@ -20,7 +20,7 @@ namespace Client
         private const double Xmax = Math.PI;
         private const double Ymin = -Math.PI;
         private const double Ymax = Math.PI;
-        private readonly double[] _levels = { 0.25, .5, .75, 1, 1.25, 1.5, 1.75 };
+        private readonly double[] _levels = { -1, -.75, -.5, -.25, 0, .25, .5, .75, 1 };
 
         #endregion Sample data for contour map
 
@@ -263,7 +263,7 @@ namespace Client
         /// <returns>The z value</returns>
         public static double Algorithm(double x, double y)
         {
-            return 1 + 2*Math.Cos(x + y) * Math.Cos(x - y) / 2;
+            return Math.Cos(x + y) * Math.Cos(x - y);
         }
     }
 }
