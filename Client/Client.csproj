@@ -99,9 +99,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphProxy\GraphProxy.csproj">
+    <ProjectReference Include="..\GraphService\WpfGraphService.csproj">
       <Project>{D7633BA7-5660-4053-AD25-17E8678C98DA}</Project>
-      <Name>GraphProxy</Name>
+      <Name>WpfGraphService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

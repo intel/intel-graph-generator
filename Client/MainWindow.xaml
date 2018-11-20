@@ -10,15 +10,10 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Margin="10" Click="OnCreateGraphsMethod1" HorizontalContentAlignment="Center">
-            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Create Graphs &#x0a; Method 1</TextBlock>
-        </Button>
-
-        <Button Grid.Row="0" Grid.Column="1" Margin="10" Click="OnCreateGraphsMethod2" HorizontalContentAlignment="Center">
-            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Create Graphs &#x0a; Method 2</TextBlock>
+        <Button Grid.Row="0" Grid.Column="0" Margin="10" Click="OnCreateGraphs" HorizontalContentAlignment="Center">
+            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Create Graphs</TextBlock>
         </Button>
         
     </Grid>

@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.ServiceModel;
-using GraphProxy;
+using WpfGraphService;
 using GraphUI.Properties;
 using OxyPlot;
 using OxyPlot.Wpf;
-using LegendPosition = GraphProxy.LegendPosition;
-using LineStyle = GraphProxy.LineStyle;
+using LegendPosition = WpfGraphService.LegendPosition;
+using LineStyle = WpfGraphService.LineStyle;
 
 namespace GraphUI
 {
@@ -32,14 +32,14 @@ namespace GraphUI
         private readonly ServiceHost _host;
 
         /// <summary>
-        /// Graph collections available in UI
+        /// Graph figures available in UI
         /// </summary>
-        private readonly List<GraphCollection> _graphCollections = new List<GraphCollection>();
+        private readonly List<Figure> _figures = new List<Figure>();
 
         /// <summary>
-        /// Dictionary to correlate guids to graph collections
+        /// Dictionary to correlate guids to graph figures
         /// </summary>
-        private readonly Dictionary<Guid, GraphCollection> _graphCollectionDictionary = new Dictionary<Guid, GraphCollection>();
+        private readonly Dictionary<Guid, Figure> _figureDictionary = new Dictionary<Guid, Figure>();
 
         /// <summary>
         /// Dictionary to correlate guids to plots
@@ -88,56 +88,56 @@ namespace GraphUI
         }
 
         /// <summary>
-        /// Creates an empty collection
+        /// Creates an empty figure
         /// </summary>
         /// <param name="name">The name for the group</param>
-        public Guid AddGraphCollection(string name)
+        public Guid AddFigure(string name)
         {
-            GraphCollection gc = null;
+            Figure figure = null;
 
             // Show new directoryName in UI
             Dispatcher.Invoke(new Action(() =>
             {
-                gc = new GraphCollection(name);
-                _graphCollections.Add(gc);
+                figure = new Figure(name);
+                _figures.Add(figure);
 
                 if (Settings.Default.AutoNavigate || XPanel.Children.Count <= 0)
                 {
-                    NavigateTo(gc);
+                    NavigateTo(figure);
                 }
 
                 UpdateHistory();
             }));
 
             var guid = Guid.NewGuid();
-            _graphCollectionDictionary.Add(guid, gc);
+            _figureDictionary.Add(guid, figure);
             return guid;
         }
 
         /// <summary>
-        /// Adds an empty line graph to the given collection
+        /// Adds an empty line graph to the given figure
         /// </summary>
-        /// <param name="graphCollection">The ID of the collection</param>
+        /// <param name="figure">The ID of the figure</param>
         /// <param name="title">The header for the graph</param>
         /// <param name="xAxis">The x-axis label</param>
         /// <param name="yAxis">The y-axis label</param>
         /// <param name="showLegend">Switch to disable legend</param>
         /// <param name="position">Enum for legend position</param>
         /// <returns>A valid GUID if successful otherwise zeros</returns>
-        public Guid AddLineGraph(Guid graphCollection, string title, string xAxis, string yAxis, bool showLegend = true, LegendPosition position = LegendPosition.TopLeft)
+        public Guid AddLineGraph(Guid figure, string title, string xAxis, string yAxis, bool showLegend = true, LegendPosition position = LegendPosition.TopLeft)
         {
-            if (!_graphCollectionDictionary.ContainsKey(graphCollection)) return Guid.Empty;
+            if (!_figureDictionary.ContainsKey(figure)) return Guid.Empty;
 
             var guid = Guid.NewGuid();
-            _plotViewDictionary.Add(guid, _graphCollectionDictionary[graphCollection].AddLineGraph(title, xAxis, yAxis, showLegend, (OxyPlot.LegendPosition)position)); 
+            _plotViewDictionary.Add(guid, _figureDictionary[figure].AddLineGraph(title, xAxis, yAxis, showLegend, (OxyPlot.LegendPosition)position)); 
             return guid;
         }
 
         /// <summary>
-        /// Adds a contour plot to the given graph collection
+        /// Adds a contour plot to the given figure
         /// </summary>
-        /// <param name="graphCollection">The graph collection ID</param>
-        /// <param name="title">The header for the graph collection</param>
+        /// <param name="figure">The figure ID</param>
+        /// <param name="title">The header for the figure</param>
         /// <param name="xAxis">The x-axis label</param>
         /// <param name="yAxis">The y-axis label</param>
         /// <param name="xMin">The minimum x value</param>
@@ -147,12 +147,12 @@ namespace GraphUI
         /// <param name="levels">The contour levels</param>
         /// <param name="points">2D array of plot values</param>
         /// <returns>A valid GUID if successful otherwise zeros</returns>
-        public Guid AddContourPlot(Guid graphCollection, string title, string xAxis, string yAxis, double xMin, double xMax, double yMin, double yMax, double[] levels, double[][] points)
+        public Guid AddContourPlot(Guid figure, string title, string xAxis, string yAxis, double xMin, double xMax, double yMin, double yMax, double[] levels, double[][] points)
         {
-            if (!_graphCollectionDictionary.ContainsKey(graphCollection)) return Guid.Empty;
+            if (!_figureDictionary.ContainsKey(figure)) return Guid.Empty;
 
             var guid = Guid.NewGuid();
-            _plotViewDictionary.Add(guid, _graphCollectionDictionary[graphCollection].AddContourPlot(title, xAxis, yAxis, xMin, xMax, yMin, yMax, levels, points)); 
+            _plotViewDictionary.Add(guid, _figureDictionary[figure].AddContourPlot(title, xAxis, yAxis, xMin, xMax, yMin, yMax, levels, points)); 
             return guid;
         }
 
@@ -164,7 +164,7 @@ namespace GraphUI
         /// <param name="x">The x coords</param>
         /// <param name="y">The y coords</param>
         /// <returns>True if successful, False otherwise</returns>
-        public bool AddSeries(Guid lineGraph, string title, List<double> x, List<double> y)
+        public bool Plot(Guid lineGraph, string title, List<double> x, List<double> y)
         {
             if (_plotViewDictionary.ContainsKey(lineGraph))
             {
@@ -183,7 +183,7 @@ namespace GraphUI
         /// <param name="y">The y coords</param>
         /// <param name="style">A custom style for the series</param>
         /// <returns>True if successful, False otherwise</returns>
-        public bool AddSeriesWithStyle(Guid lineGraph, string title, List<double> x, List<double> y, LineStyle style)
+        public bool PlotWithStyle(Guid lineGraph, string title, List<double> x, List<double> y, LineStyle style)
         {
             return AddSeries(lineGraph, title, x, y, style);
         }
@@ -227,15 +227,15 @@ namespace GraphUI
         }
 
         /// <summary>
-        /// Navigate the UI to a particular collection
+        /// Navigate the UI to a particular figure
         /// </summary>
-        /// <param name="collection">The ID for the collection</param>
+        /// <param name="figure">The ID for the figure</param>
         /// <returns>True if successful, False otherwise</returns>
-        public bool NavigateTo(Guid collection)
+        public bool NavigateTo(Guid figure)
         {
-            if (_graphCollectionDictionary.ContainsKey(collection))
+            if (_figureDictionary.ContainsKey(figure))
             {
-                NavigateTo(_graphCollectionDictionary[collection]);
+                NavigateTo(_figureDictionary[figure]);
                 return true;
             }
             return false;
@@ -273,40 +273,40 @@ namespace GraphUI
         }
 
         /// <summary>
-        /// Removes and archives old collections in the user interface
+        /// Removes and archives old figures in the user interface
         /// </summary>
         /// <returns>True if successful, False otherwise</returns>
         public bool UpdateHistory()
         {
-            var numCollectionsToRemove = 0;
+            var numFiguresToRemove = 0;
 
             if (Settings.Default.HistoryEnabled)
             {
-                numCollectionsToRemove = Math.Max(0, _graphCollections.Count - Settings.Default.NumPagesHistory);
+                numFiguresToRemove = Math.Max(0, _figures.Count - Settings.Default.NumPagesHistory);
             }
             else
             {
-                numCollectionsToRemove = Math.Max(0, _graphCollections.Count - 1);
+                numFiguresToRemove = Math.Max(0, _figures.Count - 1);
             }
 
             if (Settings.Default.ArchiveEnabled)
             {
-                for (var i = 0; i < numCollectionsToRemove; i++)
+                for (var i = 0; i < numFiguresToRemove; i++)
                 {
-                    SaveCollection(_graphCollections[i]);
+                    SaveFigure(_figures[i]);
                 }
             }
 
-            for (var i = 0; i < numCollectionsToRemove; i++)
+            for (var i = 0; i < numFiguresToRemove; i++)
             {
-                var keysWithMatchingValues = _graphCollectionDictionary.Where(p => p.Value == _graphCollections[i]).Select(p => p.Key);
-                _graphCollectionDictionary.Remove(keysWithMatchingValues.ToList()[0]);
+                var keysWithMatchingValues = _figureDictionary.Where(p => p.Value == _figures[i]).Select(p => p.Key);
+                _figureDictionary.Remove(keysWithMatchingValues.ToList()[0]);
             }
 
             var reversed = _plotViewDictionary.ToDictionary(x => x.Value, x => x.Key);
-            for (var i = 0; i < numCollectionsToRemove; i++)
+            for (var i = 0; i < numFiguresToRemove; i++)
             {
-                foreach (var plot in _graphCollections[i]._plots)
+                foreach (var plot in _figures[i]._plots)
                 {
                     if (reversed.ContainsKey(plot))
                     {
@@ -315,7 +315,7 @@ namespace GraphUI
                 }
             }
 
-            _graphCollections.RemoveRange(0, numCollectionsToRemove);
+            _figures.RemoveRange(0, numFiguresToRemove);
 
             UpdateControlState();
 
@@ -344,32 +344,32 @@ namespace GraphUI
         #region Event Handlers
 
         /// <summary>
-        /// Navigate to previous graph collection
+        /// Navigate to previous figure
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event args</param>
         private void OnBack(object sender, RoutedEventArgs e)
         {
-            var index = _graphCollections.IndexOf((GraphCollection)XPanel.Children[0]);
+            var index = _figures.IndexOf((Figure)XPanel.Children[0]);
             if (index > 0)
             {
-                NavigateTo(_graphCollections[--index]);
+                NavigateTo(_figures[--index]);
             }
             else
             {
-                NavigateTo(_graphCollections[0]);
+                NavigateTo(_figures[0]);
             }
         }
 
         /// <summary>
-        /// Navigate to next graph collection
+        /// Navigate to next figure
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event args</param>
         private void OnForward(object sender, RoutedEventArgs e)
         {
-            var index = _graphCollections.IndexOf((GraphCollection)XPanel.Children[0]);
-            NavigateTo(_graphCollections[++index]);
+            var index = _figures.IndexOf((Figure)XPanel.Children[0]);
+            NavigateTo(_figures[++index]);
         }
 
         /// <summary>
@@ -379,10 +379,10 @@ namespace GraphUI
         /// <param name="e">Event args</param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            GraphCollection.AvailableHeight = e.NewSize.Height - (XBackButton.ActualHeight + XBackButton.Margin.Top + XBackButton.Margin.Bottom);
+            Figure.AvailableHeight = e.NewSize.Height - (XBackButton.ActualHeight + XBackButton.Margin.Top + XBackButton.Margin.Bottom);
             if (XPanel.Children.Count > 0)
             {
-                ((GraphCollection)XPanel.Children[0]).Resize();
+                ((Figure)XPanel.Children[0]).Resize();
             }
         }
 
@@ -429,9 +429,9 @@ namespace GraphUI
 
             if (Settings.Default.ArchiveEnabled)
             {
-                foreach (var collection in _graphCollections)
+                foreach (var figure in _figures)
                 {
-                    SaveCollection(collection);
+                    SaveFigure(figure);
                 }
             }
         }
@@ -441,15 +441,15 @@ namespace GraphUI
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event args</param>
-        private void OnSaveCollection(object sender, RoutedEventArgs e)
+        private void OnSaveFigure(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                foreach (var plot in ((GraphCollection)XPanel.Children[0])._plots)
+                foreach (var plot in ((Figure)XPanel.Children[0])._plots)
                 {
-                    Save(plot, ((GraphCollection)XPanel.Children[0]).CollectionName, dialog.SelectedPath);
+                    Save(plot, ((Figure)XPanel.Children[0]).FigureName, dialog.SelectedPath);
                 }
             }
         }
@@ -459,13 +459,13 @@ namespace GraphUI
         #region Private Methods
 
         /// <summary>
-        /// Saves the plots in the given collection
+        /// Saves the plots in the given figure
         /// </summary>
-        /// <param name="collection">The collection</param>
-        private void SaveCollection(GraphCollection collection)
+        /// <param name="figure">The figure</param>
+        private void SaveFigure(Figure figure)
         {
-            var archiveName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss.fff - ") + collection.CollectionName;
-            foreach (var plot in collection._plots)
+            var archiveName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss.fff - ") + figure.FigureName;
+            foreach (var plot in figure._plots)
             {
                 Save(plot, archiveName, Settings.Default.ArchiveLocation);
             }
@@ -484,9 +484,9 @@ namespace GraphUI
                 return;
             }
 
-            var gc = (GraphCollection)XPanel.Children[0];
+            var figure = (Figure)XPanel.Children[0];
 
-            if (_graphCollections.IndexOf(gc) > 0)
+            if (_figures.IndexOf(figure) > 0)
             {
                 XBackButton.IsEnabled = true;
             }
@@ -495,7 +495,7 @@ namespace GraphUI
                 XBackButton.IsEnabled = false;
             }
 
-            if (_graphCollections.IndexOf(gc) < _graphCollections.Count - 1)
+            if (_figures.IndexOf(figure) < _figures.Count - 1)
             {
                 XForwardButton.IsEnabled = true;
             }
@@ -527,13 +527,13 @@ namespace GraphUI
         }
 
         /// <summary>
-        /// Navaigate to the given collection
+        /// Navigate to the given figure
         /// </summary>
-        /// <param name="gc">The collection</param>
-        private void NavigateTo(GraphCollection gc)
+        /// <param name="figure">The figure</param>
+        private void NavigateTo(Figure figure)
         {
             XPanel.Children.Clear();
-            XPanel.Children.Add(gc);
+            XPanel.Children.Add(figure);
             UpdateControlState();
         }
 
@@ -565,13 +565,13 @@ namespace GraphUI
         /// </summary>
         /// <param name="view">The plot</param>
         /// <param name="directoryName">The name of the archive sub-directory</param>
-        /// <param name="dir">The archive base directory</param>
+        /// <param name="baseDir">The archive base directory</param>
         /// <param name="newArchive">Optional argument to delete existing sub-archive</param>
-        private void Save(PlotView view, string directoryName, string dir, bool newArchive = false)
+        private void Save(PlotView view, string directoryName, string baseDir, bool newArchive = false)
         {
             var pngExporter = new PngExporter { Width = Settings.Default.ImageWidth, Height = Settings.Default.ImageHeight, Background = OxyColors.White };
-            var archiveDir = Path.Combine(dir, directoryName);
-            var archiveFile = Path.Combine(archiveDir, view.Model.Title + ".png");
+            var archiveDir = Path.Combine(baseDir, CreateSafeDirectoryName(directoryName));
+            var archiveFile = Path.Combine(archiveDir, CreateSafeFileName(view.Model.Title) + ".png");
 
             if (newArchive)
             {
@@ -592,6 +592,32 @@ namespace GraphUI
             }
 
             pngExporter.ExportToFile(view.Model, archiveFile);
+        }
+
+        public static string CreateSafeDirectoryName(string str)
+        {
+            return str.Replace(".", "")
+                      .Replace("/", "")
+                      .Replace("\"", "")
+                      .Replace("*", "")
+                      .Replace(":", "")
+                      .Replace("?", "")
+                      .Replace("<", "")
+                      .Replace(">", "")
+                      .Replace("|", "");
+        }
+
+        public static string CreateSafeFileName(string str)
+        {
+            return str.Replace("/", "")
+                      .Replace("\"", "")
+                      .Replace("*", "")
+                      .Replace(":", "")
+                      .Replace("?", "")
+                      .Replace("<", "")
+                      .Replace(">", "")
+                      .Replace("|", "")
+                      .Replace(";", "");
         }
 
         #endregion Private Methods

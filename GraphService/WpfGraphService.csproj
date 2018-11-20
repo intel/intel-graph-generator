@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D7633BA7-5660-4053-AD25-17E8678C98DA}</ProjectGuid>
+    <ProjectGuid>{A0CD2886-834E-4EF7-AADF-45660E6B8657}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GraphProxy</RootNamespace>
-    <AssemblyName>Proxies</AssemblyName>
+    <RootNamespace>GraphService</RootNamespace>
+    <AssemblyName>WpfGraphService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -47,6 +47,11 @@
     <Compile Include="Contract.cs" />
     <Compile Include="GraphService.cs" />
     <Compile Include="IService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

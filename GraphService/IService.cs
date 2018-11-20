@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 
-namespace GraphProxy
+namespace WpfGraphService
 {
     [ServiceContract]
     public interface IService
@@ -11,14 +11,14 @@ namespace GraphProxy
         /// Creates a new group of graphs
         /// </summary>
         /// <param name="name">The name for the group</param>
-        /// <returns>An identifier for the collection</returns>
+        /// <returns>An identifier for the figure</returns>
         [OperationContract]
-        Guid AddGraphCollection(string name);
+        Guid AddFigure(string name);
 
         /// <summary>
-        /// Adds an empty line graph to the given graph collection
+        /// Adds an empty line graph to the given figure
         /// </summary>
-        /// <param name="graphCollection">The collection to add the graph to</param>
+        /// <param name="figure">The figure to add the graph to</param>
         /// <param name="title">The title of the graph</param>
         /// <param name="xAxis">The x-axis label</param>
         /// <param name="yAxis">The y-axis label</param>
@@ -26,7 +26,7 @@ namespace GraphProxy
         /// <param name="position">Enum to set the legend postion</param>
         /// <returns></returns>
         [OperationContract]
-        Guid AddLineGraph(Guid graphCollection, string title, string xAxis, string yAxis, bool showLegend = true, LegendPosition position = LegendPosition.TopLeft);
+        Guid AddLineGraph(Guid figure, string title, string xAxis, string yAxis, bool showLegend = true, LegendPosition position = LegendPosition.TopLeft);
 
         /// <summary>
         /// Adds a series to the given line graph
@@ -36,7 +36,7 @@ namespace GraphProxy
         /// <param name="x">The x values</param>
         /// <param name="y">The y values</param>
         [OperationContract]
-        bool AddSeries(Guid lineGraph, string title, List<double> x, List<double> y);
+        bool Plot(Guid lineGraph, string title, List<double> x, List<double> y);
 
         /// <summary>
         /// Adds a series to the given line graph
@@ -47,7 +47,7 @@ namespace GraphProxy
         /// <param name="y">The y values</param>
         /// <param name="style">A custom style for the series</param>
         [OperationContract]
-        bool AddSeriesWithStyle(Guid lineGraph, string title, List<double> x, List<double> y, LineStyle style);
+        bool PlotWithStyle(Guid lineGraph, string title, List<double> x, List<double> y, LineStyle style);
 
         /// <summary>
         /// Sets the view window for the graph
@@ -61,9 +61,9 @@ namespace GraphProxy
         bool SetAxisBoundaries(Guid lineGraph, double xAxisMin = double.MinValue, double xAxisMax = double.MaxValue, double yAxisMin = double.MinValue, double yAxisMax = double.MaxValue);
 
         /// <summary>
-        /// Adds a contour plot to the given collection
+        /// Adds a contour plot to the given figure
         /// </summary>
-        /// <param name="graphCollection">The graph collection to add the plot to</param>
+        /// <param name="figure">The figure to add the plot to</param>
         /// <param name="title">The title of the contour plot</param>
         /// <param name="xAxis">The x-axis label</param>
         /// <param name="yAxis">The y-axis label</param>
@@ -74,7 +74,7 @@ namespace GraphProxy
         /// <param name="levels">The values for the contour lines</param>
         /// <param name="points">Two dimensional array of values to plot</param>
         [OperationContract]
-        Guid AddContourPlot(Guid graphCollection, string title, string xAxis, string yAxis, double xMin, double xMax, double yMin, double yMax, double[] levels, double[][] points);
+        Guid AddContourPlot(Guid figure, string title, string xAxis, string yAxis, double xMin, double xMax, double yMin, double yMax, double[] levels, double[][] points);
 
         /// <summary>
         /// Clears the contents in an individual graph
@@ -84,11 +84,11 @@ namespace GraphProxy
         bool ClearGraph(Guid graph);
 
         /// <summary>
-        /// Directs the UI to navigate to a particular collection
+        /// Directs the UI to navigate to a particular figure
         /// </summary>
-        /// <param name="collection">The collection to navigate to</param>
+        /// <param name="figure">The figure to navigate to</param>
         [OperationContract]
-        bool NavigateTo(Guid collection);
+        bool NavigateTo(Guid figure);
 
         /// <summary>
         /// Set the number of pages stored in the UI

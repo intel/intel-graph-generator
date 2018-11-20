@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace GraphProxy
+namespace WpfGraphService
 {
     /// <summary>
     /// The position for the line graph legend
@@ -100,12 +100,20 @@ namespace GraphProxy
     /// </summary>
     public class Styles
     {
-        public static readonly LineStyle RedLine = new LineStyle
+        public static readonly LineStyle RedDashDotLine = new LineStyle
         {
             LineColor = Color.FromArgb(0xFF, 0xFF, 0x00, 0x00),
             Dashedness = LineDashedness.DashDot,
             Thickness = 3,
             Smooth = true,
+        };
+
+        public static readonly LineStyle RedLine = new LineStyle
+        {
+            LineColor = Color.FromArgb(0xFF, 0xFF, 0x00, 0x00),
+            Dashedness = LineDashedness.Solid,
+            Thickness = 3,
+            Smooth = false,
         };
 
         public static readonly LineStyle GreenLine = new LineStyle
@@ -187,6 +195,44 @@ namespace GraphProxy
             MarkerStroke = Color.DarkGreen,
             MarkerSize = 5,
             MarkerStrokeThickness = 2,
+        };
+
+        public static readonly LineStyle DiamondMarker = new LineStyle
+        {
+            LineColor = Color.Transparent,
+            MarkerType = MarkerType.Diamond,
+            MarkerFill = Color.FromArgb(0xFF, 0x00, 0xFF, 0xFF),
+            MarkerStroke = Color.FromArgb(0xFF, 0x00, 0x00, 0xFF),
+            MarkerSize = 4,
+            MarkerStrokeThickness = 3,
+        };
+
+        public static readonly LineStyle BottomLineColor = new LineStyle
+        {
+            LineColor = Color.FromArgb(0xFF, 0xFF, 0x00, 0x80),
+            Dashedness = LineDashedness.Solid,
+            Thickness = 10,
+            Smooth = false,
+        };
+
+        public static readonly LineStyle TopLineColor = new LineStyle
+        {
+            LineColor = Color.FromArgb(0xFF, 0x00, 0xFF, 0xFF),
+            Dashedness = LineDashedness.Solid,
+            Thickness = 4,
+            Smooth = false,
+        };
+
+        public static readonly LineStyle ErrorMarker = new LineStyle
+        {
+            LineColor = Color.FromArgb(0xFF, 0xFF, 0x00, 0x00),
+            MarkerType = MarkerType.Circle,
+            MarkerStroke = Color.Transparent,
+            MarkerFill = Color.FromArgb(0xFF, 0x00, 0xFF, 0xFF),
+            MarkerSize = 5,
+            MarkerStrokeThickness = 1,
+            Thickness = 5,
+            Smooth = false,
         };
     }
 }

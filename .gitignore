@@ -189,3 +189,6 @@ Shared
 
 # Patches
 *.patch
+
+# Visual Studio Settings
+.vs/

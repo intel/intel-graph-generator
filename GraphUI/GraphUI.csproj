@@ -106,15 +106,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ContourPlot.cs" />
-    <Compile Include="GraphCollection.xaml.cs">
-      <DependentUpon>GraphCollection.xaml</DependentUpon>
+    <Compile Include="Figure.xaml.cs">
+      <DependentUpon>Figure.xaml</DependentUpon>
     </Compile>
     <Compile Include="LineGraph.cs" />
     <Compile Include="OptionsDialog.xaml.cs">
       <DependentUpon>OptionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Service.cs" />
-    <Page Include="GraphCollection.xaml">
+    <Page Include="Figure.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -171,13 +171,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphProxy\GraphProxy.csproj">
-      <Project>{D7633BA7-5660-4053-AD25-17E8678C98DA}</Project>
-      <Name>GraphProxy</Name>
-    </ProjectReference>
+    <Resource Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icon.ico" />
+    <ProjectReference Include="..\GraphService\WpfGraphService.csproj">
+      <Project>{D7633BA7-5660-4053-AD25-17E8678C98DA}</Project>
+      <Name>WpfGraphService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

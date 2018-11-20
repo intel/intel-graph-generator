@@ -9,30 +9,30 @@ using OxyPlot.Wpf;
 namespace GraphUI
 {
     /// <summary>
-    /// Interaction logic for GraphCollection.xaml
+    /// Interaction logic for Figure.xaml
     /// </summary>
-    public partial class GraphCollection : UserControl, INotifyPropertyChanged
+    public partial class Figure : UserControl, INotifyPropertyChanged
     {
         /// <summary>
-        /// Backing property for CollectionName
+        /// Backing property for FigureName
         /// </summary>
-        private string _collectionName;
+        private string _figureName;
 
         /// <summary>
-        /// Collection header in UI
+        /// Figure header in UI
         /// </summary>
-        public string CollectionName
+        public string FigureName
         {
-            get { return _collectionName; }
+            get { return _figureName; }
             set
             {
-                _collectionName = value;
-                RaisePropertyChanged("CollectionName");
+                _figureName = value;
+                RaisePropertyChanged("FigureName");
             }
         }
 
         /// <summary>
-        /// All plots in collection
+        /// All plots in figure
         /// </summary>
         public List<PlotView> _plots = new List<PlotView>();
 
@@ -45,18 +45,18 @@ namespace GraphUI
         /// <summary>
         /// Basic class initialization
         /// </summary>
-        private GraphCollection()
+        private Figure()
         {
             InitializeComponent();
         }
 
         /// <summary>
-        /// Initialization with collection header
+        /// Initialization with figure header
         /// </summary>
         /// <param name="name">The header</param>
-        public GraphCollection(string name) : this()
+        public Figure(string name) : this()
         {
-            CollectionName = name;
+            FigureName = name;
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace GraphUI
         {
             foreach (var view in XGrid.Children)
             {
-                ((PlotView)view).Height = (AvailableHeight - XGroupName.ActualHeight) / XGrid.RowDefinitions.Count;
+                ((PlotView)view).Height = (AvailableHeight - XFigureName.ActualHeight) / XGrid.RowDefinitions.Count;
             }
         }
 

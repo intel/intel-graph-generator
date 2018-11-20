@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GraphProxy;
+using WpfGraphService;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Wpf;
@@ -33,10 +33,10 @@ namespace GraphUI
                     Title = title,
                     LegendTitle = "Legend",
                     LegendPosition = position,
-                    LegendOrientation = LegendOrientation.Horizontal,
+                    LegendOrientation = LegendOrientation.Vertical,
                     LegendPlacement = LegendPlacement.Inside,
                     LegendBackground = OxyColors.Transparent,
-                    LegendBorder = OxyColors.Black,
+                    LegendBorder = OxyColors.Transparent,
                 };
             }
             else
@@ -44,6 +44,7 @@ namespace GraphUI
                 Model = new PlotModel
                 {
                     Title = title,
+                    IsLegendVisible = false
                 };
             }
             Model.Axes.Add(new LinearAxis { Title = xAxis, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot,  Position = AxisPosition.Bottom});
@@ -82,6 +83,7 @@ namespace GraphUI
                 Title = title,
                 CanTrackerInterpolatePoints = false, // snap to plot values
                 Smooth = false, // show raw data
+                StrokeThickness = 5,
             };
 
             for (var i = 0; i < x.Count; i++)
@@ -103,7 +105,7 @@ namespace GraphUI
         /// <param name="x">The x values</param>
         /// <param name="y">The y values</param>
         /// <param name="style">The line style</param>
-        public void AddSeries(List<double> x, List<double> y, string title, GraphProxy.LineStyle style)
+        public void AddSeries(List<double> x, List<double> y, string title, WpfGraphService.LineStyle style)
         {
             double[] dashes = null;
 

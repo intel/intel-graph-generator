@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using GraphProxy;
+using WpfGraphService;
 
 namespace GraphUI
 {
     public class Service : IService
     {
-        public Guid AddGraphCollection(string name)
+        public Guid AddFigure(string name)
         {
-            return MainWindow.Instance.AddGraphCollection(name);
+            return MainWindow.Instance.AddFigure(name);
         }
 
-        public Guid AddLineGraph(Guid graphCollection, string title, string xAxis, string yAxis, bool showLegend = true, LegendPosition position = LegendPosition.TopLeft)
+        public Guid AddLineGraph(Guid figure, string title, string xAxis, string yAxis, bool showLegend = true, LegendPosition position = LegendPosition.TopLeft)
         {
-            return MainWindow.Instance.AddLineGraph(graphCollection, title, xAxis, yAxis, showLegend, position);
+            return MainWindow.Instance.AddLineGraph(figure, title, xAxis, yAxis, showLegend, position);
         }
 
-        public bool AddSeries(Guid lineGraph, string title, List<double> x, List<double> y)
+        public bool Plot(Guid lineGraph, string title, List<double> x, List<double> y)
         {
-            return MainWindow.Instance.AddSeries(lineGraph, title, x, y);
+            return MainWindow.Instance.Plot(lineGraph, title, x, y);
         }
 
-        public bool AddSeriesWithStyle(Guid lineGraph, string title, List<double> x, List<double> y, LineStyle style)
+        public bool PlotWithStyle(Guid lineGraph, string title, List<double> x, List<double> y, LineStyle style)
         {
             return MainWindow.Instance.AddSeries(lineGraph, title, x, y, style);
         }
@@ -31,9 +31,9 @@ namespace GraphUI
             return MainWindow.Instance.SetAxisBoundaries(lineGraph, xAxisMin, xAxisMax, yAxisMin, yAxisMax);
         }
 
-        public Guid AddContourPlot(Guid graphCollection, string title, string xAxis, string yAxis, double xMin, double xMax, double yMin, double yMax, double[] levels, double[][] points)
+        public Guid AddContourPlot(Guid figure, string title, string xAxis, string yAxis, double xMin, double xMax, double yMin, double yMax, double[] levels, double[][] points)
         {
-            return MainWindow.Instance.AddContourPlot(graphCollection, title, xAxis, yAxis, xMin, xMax, yMin, yMax, levels, points);
+            return MainWindow.Instance.AddContourPlot(figure, title, xAxis, yAxis, xMin, xMax, yMin, yMax, levels, points);
         }
 
         public bool ClearGraph(Guid graph)
@@ -41,9 +41,9 @@ namespace GraphUI
             return MainWindow.Instance.ClearGraph(graph);
         }
 
-        public bool NavigateTo(Guid collection)
+        public bool NavigateTo(Guid figure)
         {
-            return MainWindow.Instance.NavigateTo(collection);
+            return MainWindow.Instance.NavigateTo(figure);
         }
 
         public bool SetUiHistory(int count)

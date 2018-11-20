@@ -20,7 +20,7 @@
 
         <StackPanel Grid.Row="0" x:Name="XPanel" Orientation="Vertical" />
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="XBackButton" Click="OnBack" ToolTip="Go to previous collection">
+            <Button x:Name="XBackButton" Click="OnBack" ToolTip="Go to previous figure">
                 <Path Fill="#FFFFFFFF" StrokeThickness="1" Stroke="#FFFFFFFF" Opacity="1" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Fill">
                     <Path.Data>
                         <!-- This and the following path geometries were created by obtaining an SVG from https://iconmonstr.com, opening it with Inkscape and saving it as a XAML file-->
@@ -28,7 +28,7 @@
                     </Path.Data>
                 </Path>
             </Button>
-            <Button x:Name="XForwardButton" Click="OnForward" ToolTip="Go to next collection">
+            <Button x:Name="XForwardButton" Click="OnForward" ToolTip="Go to next figure">
                 <Path Fill="#FFFFFFFF" StrokeThickness="1" Stroke="#FFFFFFFF" Opacity="1" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Fill">
                     <Path.Data>
                         <PathGeometry Figures="M15 5.829l6.171 6.171-6.171 6.171v-3.171h-13v-6h13v-3.171zm-2-4.829v6h-13v10h13v6l11-11-11-11z" FillRule="NonZero"/>
@@ -52,7 +52,7 @@
                 </Path>
             </Button>
 
-            <Button x:Name="XSaveButton" Click="OnSaveCollection" ToolTip="Save current collection of graphs">
+            <Button x:Name="XSaveButton" Click="OnSaveFigure" ToolTip="Save current figure">
                 <Path Fill="#FFFFFFFF" StrokeThickness="1" Stroke="#FFFFFFFF" Opacity="1" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Fill">
                     <Path.Data>
                         <PathGeometry Figures="M13 3h2.996v5h-2.996v-5zm11 1v20h-24v-24h20l4 4zm-17 5h10v-7h-10v7zm15-4.171l-2.828-2.829h-.172v9h-14v-9h-3v20h20v-17.171z" FillRule="NonZero"/>
