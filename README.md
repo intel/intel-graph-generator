@@ -1,3 +1,12 @@
+DISCONTINUATION OF PROJECT.
+
+This project will no longer be maintained by Intel.
+
+Intel has ceased development and contributions including, but not limited to, maintenance, bug fixes, new releases, or updates, to this project. 
+
+Intel no longer accepts patches to this project.
+
+If you have an ongoing need to use this project, are interested in independently developing it, or would like to maintain patches for the open source software community, please create your own fork of this project. 
 # Intel&reg; Graph Generator
 
 This software is a general purpose graphing solution that exposes a web service allowing it to be used in a variety of work flows where visualizaiton of numeric data is helpful. It was developed with Visual Studio 2010 but can easily be ported to newer environments. 
